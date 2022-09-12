@@ -1,14 +1,13 @@
 //Line following competition
 //IR receiverm - how to wait for IR remote commands
-void zmain(void)
-{
+void zmain(void) {
     //IR receiverm - how to wait for IR remote commands
 void zmain(void);
 
     uint8_t button_;
     printf("\nStart\n");
     
-    while(true){
+    while(true) {
         button_ = SW1_Read();
         if(button_==0){
             IR_Start();
@@ -25,7 +24,8 @@ void zmain(void);
             // set center sensor threshold to 11000 and others to 9000
             reflectance_set_threshold(9000, 9000, 11000, 11000, 9000, 9000); 
             vTaskDelay(200);
-                while(startline){
+	    
+                while(startline) {
                     // read raw sensor values
                     reflectance_read(&ref);
                     reflectance_digital(&dig); 
@@ -34,13 +34,14 @@ void zmain(void);
                         Beep(60,80);
                     }
                     
-                    else{
+                    else {
                         motor_forward(0,0);       // Stop motors
                         printf("line");
                         print_mqtt("Zumo006/ready", "line");
                         startline = false;
                     }
                 }
+		
             IR_wait();  // wait for IR command
             led = !led;
             BatteryLed_Write(led);   
@@ -49,9 +50,8 @@ void zmain(void);
             print_mqtt("Zumo006/start", "%d", start);
             
             // main loop when IR signal is recieved
-            while(loop)
-            {   
-                if(led){
+            while(loop) {   
+                if(led) {
                     // read raw sensor values
                     reflectance_read(&ref);
                     reflectance_digital(&dig); 
